@@ -1,0 +1,66 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_cli_inputs.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/01 14:12:53 by jode-cas          #+#    #+#             */
+/*   Updated: 2025/12/11 17:33:50 by jode-cas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "main.h"
+
+// if is not '-' or '+' neither a number return 0
+static char	is_valid_for_atol(const char *nptr)
+{
+	int	i;
+
+	i = 0;
+	while (nptr[i])
+	{
+		if (!(nptr[i] == 45 || nptr[i] == 43) && (nptr[i] < 48 || nptr[i] > 57))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static unsigned char	is_int_in_limit(long n)
+{
+	if (n > 2147483647)
+		return (0);
+	else if (n < -2147483648)
+		return (0);
+	else
+		return (1);
+}
+
+long	ft_atol(const char *nptr)
+{
+	long	result;
+	char	signal;
+
+	if (!is_valid_for_atol(nptr))
+		perror("Invalid input number");
+	result = 0;
+	signal = 1;
+	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '-')
+		signal *= -1;
+	if (*nptr == '-' || *nptr == '+')
+		nptr++;
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		result = (result * 10) + (*nptr - '0');
+		nptr++;
+	}
+	if (is_int_in_limit(result * signal))
+		return (result * signal);
+	else
+	{
+		return (0);
+	}
+}

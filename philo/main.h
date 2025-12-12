@@ -6,33 +6,54 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/11 13:09:28 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:50:25 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 
-typedef struct s_fork {
-	long id;
-	pthread_mutex_t fork_mutex;
-} t_fork;
+typedef struct s_philo	t_philo;
+
+typedef struct s_fork
+{
+	long				id;
+	pthread_mutex_t		fork_mutex;
+}						t_fork;
 
 typedef struct s_table
 {
-	long n_philos;
-	long n_meals;
-	long die_time;
-	long eat_time;
-	long sleep_time;
-	long start_time;
-	long is_dinner_finished;
-	long n_threads_running;
-} t_table;
+	long				n_philos;
+	long				n_meals;
+	long				die_time;
+	long				eat_time;
+	long				sleep_time;
+	long				start_time;
+	long				is_dinner_finished;
+	long				n_threads_running;
+	t_philo				*philosophers;
+}						t_table;
 
-typedef struct s_philo {
-	char is_full;
-	t_fork *left_fork;
-	t_fork *right_fork;
-} t_philo;
+typedef struct s_philo
+{
+	long				id;
+	char				is_full;
+	long				last_meal_time;
+	long				meals_made;
+	t_fork				*left_fork;
+	t_fork				*right_fork;
+	pthread_t			thread;
+	pthread_mutex_t		philo_mutex;
+	t_table				*table;
+}						t_philo;
+
+typedef enum e_thread_operation {
+	CREATE,
+	JOIN
+} t_thread_operation;
+
+long					ft_atol(const char *nptr);
+void					*safe_malloc(long size);
+void					data_init(t_table *table, t_philo *philosophers,
+							t_fork *forks, int argc, char *argv[]);
