@@ -6,27 +6,32 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/13 22:50:19 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:18:28 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-static void	*get_forks(void *arg)
+static void	*dinner_routine(void *arg)
 {
-	t_philo *philosopher = (t_philo *)arg;
-	pthread_mutex_lock(&philosopher->right_fork->fork_mutex);
-	printf("#%ld got right fork (#%ld)\n", philosopher->id, philosopher->right_fork->id);
-	pthread_mutex_lock(&philosopher->left_fork->fork_mutex);
-	printf("#%ld got left fork (#%ld)\n", philosopher->id, philosopher->left_fork->id);
-	// pthread_mutex_unlock(&philosopher->right_fork->fork_mutex); 
-	// pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
+	t_philo	*philosopher;
+
+	philosopher = (t_philo *)arg;
+	set_long(&philosopher->table->table_mutex,
+		&philosopher->table->n_threads_running,
+		philosopher->table->n_threads_running + 1);
+	wait_all_threads(philosopher->table);
+	while (!philosopher->is_full && !dinner_has_finished(philosopher->table))
+	{
+		eat(philosopher);
+		sleep(philosopher);
+	}
 	return (0);
 }
 
 static void	init_philos_and_forks(t_table *table)
 {
-	int	i;
+	unsigned long	i;
 
 	i = 0;
 	while (i < table->n_philos)
@@ -36,6 +41,7 @@ static void	init_philos_and_forks(t_table *table)
 		table->philosophers[i].id = i;
 		table->philosophers[i].is_full = 0;
 		table->philosophers[i].meals_made = 0;
+		table->philosophers[i].last_meal_time = gettime();
 		table->philosophers[i].table = table;
 		table->philosophers[i].right_fork = &table->forks[i];
 		if (i == 0)
@@ -43,7 +49,7 @@ static void	init_philos_and_forks(t_table *table)
 				- 1];
 		else
 			table->philosophers[i].left_fork = &table->forks[i - 1];
-		pthread_create(&table->philosophers[i].thread, NULL, &get_forks,
+		pthread_create(&table->philosophers[i].thread, NULL, &dinner_routine,
 			(void *)&table->philosophers[i]);
 		i++;
 	}
@@ -51,6 +57,7 @@ static void	init_philos_and_forks(t_table *table)
 
 char	init_table(t_table *table, int argc, char *argv[])
 {
+	pthread_mutex_init(&table->table_mutex, NULL);
 	table->n_threads_running = 0;
 	table->is_dinner_finished = 0;
 	table->n_philos = ft_atol(argv[1]);
@@ -67,4 +74,39 @@ char	init_table(t_table *table, int argc, char *argv[])
 		return (0);
 	init_philos_and_forks(table);
 	return (1);
+}
+
+static void	*waiter_routine(void *arg)
+{
+	t_philo			*philosophers;
+	unsigned long	i;
+	unsigned long	time_since_last_meal;
+	char			is_dead;
+
+	philosophers = (t_philo *)arg;
+	wait_all_threads(philosophers->table);
+	while (!dinner_has_finished(philosophers->table))
+	{
+		i = 0;
+		while (i < philosophers->table->n_philos)
+		{
+			time_since_last_meal = gettime() - philosophers[i].last_meal_time;
+			is_dead = time_since_last_meal >= philosophers->table->die_time;
+			if (is_dead)
+			{
+				print_status(&philosophers[i], DIED);
+				philosophers->table->is_dinner_finished = 1;
+				break ;
+			}
+			i++;
+		}
+	}
+	return (0);
+}
+
+void	init_waiter(t_philo *philosophers)
+{
+	pthread_t waiter_thread;
+	pthread_create(&waiter_thread, NULL, &waiter_routine, philosophers);
+	pthread_join(waiter_thread, NULL);
 }
