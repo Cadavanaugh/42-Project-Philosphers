@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 13:36:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/15 18:13:35 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:35:13 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,4 @@ char	get_char(pthread_mutex_t *mutex, char *attr)
 	value = *attr;
 	pthread_mutex_unlock(mutex);
 	return (value);
-}
-
-char	dinner_has_finished(t_table *table)
-{
-	return (get_char(&table->table_mutex,
-			&table->is_dinner_finished));
 }

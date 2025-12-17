@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/16 17:18:28 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:22:56 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	*dinner_routine(void *arg)
 		&philosopher->table->n_threads_running,
 		philosopher->table->n_threads_running + 1);
 	wait_all_threads(philosopher->table);
-	while (!philosopher->is_full && !dinner_has_finished(philosopher->table))
+	while (!philosopher->is_full && !philosopher->table->is_dinner_finished)
 	{
 		eat(philosopher);
 		sleep(philosopher);
@@ -50,7 +50,7 @@ static void	init_philos_and_forks(t_table *table)
 		else
 			table->philosophers[i].left_fork = &table->forks[i - 1];
 		pthread_create(&table->philosophers[i].thread, NULL, &dinner_routine,
-			(void *)&table->philosophers[i]);
+			&table->philosophers[i]);
 		i++;
 	}
 }
@@ -82,24 +82,30 @@ static void	*waiter_routine(void *arg)
 	unsigned long	i;
 	unsigned long	time_since_last_meal;
 	char			is_dead;
+	unsigned long full_philos = 0;
 
 	philosophers = (t_philo *)arg;
 	wait_all_threads(philosophers->table);
-	while (!dinner_has_finished(philosophers->table))
+	while (!philosophers->table->is_dinner_finished)
 	{
 		i = 0;
+		full_philos = 0;
 		while (i < philosophers->table->n_philos)
 		{
 			time_since_last_meal = gettime() - philosophers[i].last_meal_time;
 			is_dead = time_since_last_meal >= philosophers->table->die_time;
-			if (is_dead)
+			if (is_dead && !philosophers[i].is_full)
 			{
 				print_status(&philosophers[i], DIED);
 				philosophers->table->is_dinner_finished = 1;
 				break ;
 			}
+			if (philosophers[i].is_full)
+				full_philos++;
 			i++;
 		}
+		if (full_philos == philosophers->table->n_philos)
+			break;
 	}
 	return (0);
 }

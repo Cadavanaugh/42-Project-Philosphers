@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/16 17:54:44 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:35:56 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 
 void	eat(t_philo *philosopher)
 {
-	if (philosopher->is_full || philosopher->table->is_dinner_finished)
+	if ((philosopher->is_full || philosopher->table->is_dinner_finished)
+		|| !assign_forks(philosopher))
 		return ;
-	assign_forks(philosopher);
 	philosopher->meals_made++;
 	philosopher->last_meal_time = gettime();
-	precise_sleep_ms(philosopher->table->eat_time);
 	print_status(philosopher, EAT);
-	if (philosopher->meals_made == philosopher->table->limit_meals)
-		philosopher->is_full = 1;
+	precise_sleep_ms(philosopher->table->eat_time);
 	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
 	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
+	if (philosopher->meals_made == philosopher->table->limit_meals)
+		philosopher->is_full = 1;
 }
 
 void	sleep(t_philo *philosopher)
 {
-	if (philosopher->is_full || dinner_has_finished(philosopher->table))
+	if (philosopher->is_full || philosopher->table->is_dinner_finished)
 		return ;
 	print_status(philosopher, SLEEP);
 	precise_sleep_ms(philosopher->table->sleep_time);
@@ -56,6 +56,8 @@ void	sleep(t_philo *philosopher)
 
 void	think(t_philo *philosopher, long think_time_in_ms)
 {
+	if (philosopher->is_full || philosopher->table->is_dinner_finished)
+		return ;
 	print_status(philosopher, THINK);
 	precise_sleep_ms(think_time_in_ms);
 }

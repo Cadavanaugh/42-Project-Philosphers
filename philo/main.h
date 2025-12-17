@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/16 17:09:41 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:35:22 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char					is_input_valid(int argc, char *argv[]);
 char					init_table(t_table *table, int argc, char *argv[]);
 unsigned long			gettime(void);
 void					precise_sleep_ms(long time_to_sleep_in_ms);
-void					assign_forks(t_philo *philosopher);
+char					assign_forks(t_philo *philosopher);
 void					print_status(t_philo *philosopher,
 							t_philo_status status);
 void					eat(t_philo *philosopher);
@@ -78,6 +78,5 @@ void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
 							unsigned long value);
 unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
-char					dinner_has_finished(t_table *table);
 void					think(t_philo *philosopher, long think_time_in_ms);
 void					wait_all_threads(t_table *table);
