@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/16 18:35:56 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:28:43 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,22 @@ void	think(t_philo *philosopher, long think_time_in_ms)
 		return ;
 	print_status(philosopher, THINK);
 	precise_sleep_ms(think_time_in_ms);
+}
+
+char	check_death(t_philo *philosophers)
+{
+	unsigned long	i;
+	char			is_dead;
+	unsigned long	time_since_last_meal;
+
+	i = 0;
+	time_since_last_meal = gettime() - philosophers[i].last_meal_time;
+	is_dead = time_since_last_meal >= philosophers->table->die_time;
+	if (is_dead && !philosophers[i].is_full)
+	{
+		print_status(&philosophers[i], DIED);
+		philosophers->table->is_dinner_finished = 1;
+		return (1);
+	}
+	return (0);
 }

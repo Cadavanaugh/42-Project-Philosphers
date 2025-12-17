@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/17 17:22:56 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:29:17 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ static void	*waiter_routine(void *arg)
 {
 	t_philo			*philosophers;
 	unsigned long	i;
-	unsigned long	time_since_last_meal;
-	char			is_dead;
-	unsigned long full_philos = 0;
+	unsigned long full_philos;
 
 	philosophers = (t_philo *)arg;
 	wait_all_threads(philosophers->table);
@@ -92,14 +90,8 @@ static void	*waiter_routine(void *arg)
 		full_philos = 0;
 		while (i < philosophers->table->n_philos)
 		{
-			time_since_last_meal = gettime() - philosophers[i].last_meal_time;
-			is_dead = time_since_last_meal >= philosophers->table->die_time;
-			if (is_dead && !philosophers[i].is_full)
-			{
-				print_status(&philosophers[i], DIED);
-				philosophers->table->is_dinner_finished = 1;
-				break ;
-			}
+			if(check_death(philosophers))
+				break;
 			if (philosophers[i].is_full)
 				full_philos++;
 			i++;
