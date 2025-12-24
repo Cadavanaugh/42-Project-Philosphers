@@ -6,7 +6,7 @@
 #    By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/01 13:55:45 by jode-cas          #+#    #+#              #
-#    Updated: 2025/12/16 17:40:16 by jode-cas         ###   ########.fr        #
+#    Updated: 2025/12/23 21:36:59 by jode-cas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OBJS = $(SRCS:%.c=%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(SRCS) -o main
+	$(CC) $(SRCS) -o philo
 
 $(OBJS): $(SRCS)
 	$(CC) -c $< -o $@

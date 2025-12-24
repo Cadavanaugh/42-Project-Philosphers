@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/17 17:28:32 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/23 18:13:03 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void					print_status(t_philo *philosopher,
 							t_philo_status status);
 void					eat(t_philo *philosopher);
 void					sleep(t_philo *philosopher);
-void					init_waiter(t_philo *philosophers);
 void					set_char(pthread_mutex_t *mutex, char *attr,
 							char value);
 void					set_long(pthread_mutex_t *mutex, unsigned long *attr,

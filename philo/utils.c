@@ -6,13 +6,14 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 13:36:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/16 18:35:13 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/23 16:53:04 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void	set_long(pthread_mutex_t *mutex, unsigned long *attr, unsigned long value)
+void	set_long(pthread_mutex_t *mutex, unsigned long *attr,
+		unsigned long value)
 {
 	pthread_mutex_lock(mutex);
 	*attr = value;

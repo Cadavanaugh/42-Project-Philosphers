@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/17 17:28:43 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:36:44 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 
 void	eat(t_philo *philosopher)
 {
-	if ((philosopher->is_full || philosopher->table->is_dinner_finished)
-		|| !assign_forks(philosopher))
+	if ((philosopher->is_full || philosopher->table->is_dinner_finished))
 		return ;
-	philosopher->meals_made++;
+	assign_forks(philosopher);
 	philosopher->last_meal_time = gettime();
 	print_status(philosopher, EAT);
 	precise_sleep_ms(philosopher->table->eat_time);
+	philosopher->meals_made++;
 	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
 	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
 	if (philosopher->meals_made == philosopher->table->limit_meals)

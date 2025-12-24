@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/17 17:29:17 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:29:04 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	init_philos_and_forks(t_table *table)
 	{
 		table->forks[i].id = i;
 		pthread_mutex_init(&table->forks[i].fork_mutex, NULL);
-		table->philosophers[i].id = i;
+		table->philosophers[i].id = i + 1;
 		table->philosophers[i].is_full = 0;
 		table->philosophers[i].meals_made = 0;
 		table->philosophers[i].last_meal_time = gettime();
@@ -55,32 +55,11 @@ static void	init_philos_and_forks(t_table *table)
 	}
 }
 
-char	init_table(t_table *table, int argc, char *argv[])
-{
-	pthread_mutex_init(&table->table_mutex, NULL);
-	table->n_threads_running = 0;
-	table->is_dinner_finished = 0;
-	table->n_philos = ft_atol(argv[1]);
-	table->die_time = ft_atol(argv[2]);
-	table->sleep_time = ft_atol(argv[3]);
-	table->eat_time = ft_atol(argv[4]);
-	if (argc == 6)
-		table->limit_meals = ft_atol(argv[5]);
-	else
-		table->limit_meals = -1;
-	table->philosophers = malloc(sizeof(t_philo) * table->n_philos);
-	table->forks = malloc(sizeof(t_fork) * table->n_philos);
-	if (!table->philosophers || !table->forks)
-		return (0);
-	init_philos_and_forks(table);
-	return (1);
-}
-
 static void	*waiter_routine(void *arg)
 {
 	t_philo			*philosophers;
 	unsigned long	i;
-	unsigned long full_philos;
+	unsigned long	full_philos;
 
 	philosophers = (t_philo *)arg;
 	wait_all_threads(philosophers->table);
@@ -90,21 +69,44 @@ static void	*waiter_routine(void *arg)
 		full_philos = 0;
 		while (i < philosophers->table->n_philos)
 		{
-			if(check_death(philosophers))
-				break;
+			if (check_death(philosophers))
+				break ;
 			if (philosophers[i].is_full)
 				full_philos++;
 			i++;
 		}
 		if (full_philos == philosophers->table->n_philos)
-			break;
+			break ;
 	}
 	return (0);
 }
 
-void	init_waiter(t_philo *philosophers)
+static void	init_waiter(t_philo *philosophers)
 {
-	pthread_t waiter_thread;
+	pthread_t	waiter_thread;
+
 	pthread_create(&waiter_thread, NULL, &waiter_routine, philosophers);
 	pthread_join(waiter_thread, NULL);
+}
+
+char	init_table(t_table *table, int argc, char *argv[])
+{
+	pthread_mutex_init(&table->table_mutex, NULL);
+	table->n_threads_running = 0;
+	table->is_dinner_finished = 0;
+	table->n_philos = ft_atol(argv[1]);
+	table->die_time = ft_atol(argv[2]);
+	table->eat_time = ft_atol(argv[3]);
+	table->sleep_time = ft_atol(argv[4]);
+	if (argc == 6)
+		table->limit_meals = ft_atol(argv[5]);
+	else
+		table->limit_meals = -1;
+	table->philosophers = malloc(sizeof(t_philo) * table->n_philos);
+	table->forks = malloc(sizeof(t_fork) * table->n_philos);
+	if (!table->philosophers || !table->forks)
+		return (0);
+	init_philos_and_forks(table);
+	init_waiter(table->philosophers);
+	return (1);
 }
