@@ -43,6 +43,8 @@ typedef struct s_philo
 {
 	unsigned long		id;
 	char				is_full;
+	char				has_eaten;
+	char				has_slept;
 	unsigned long		last_meal_time;
 	unsigned long		meals_made;
 	t_fork				*left_fork;
