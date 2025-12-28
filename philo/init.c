@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/23 19:29:04 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/28 14:12:28 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,13 @@ static void	init_philos_and_forks(t_table *table)
 
 static void	*waiter_routine(void *arg)
 {
-	t_philo			*philosophers;
-	unsigned long	i;
-	unsigned long	full_philos;
+	t_philo	*philosophers;
 
 	philosophers = (t_philo *)arg;
 	wait_all_threads(philosophers->table);
 	while (!philosophers->table->is_dinner_finished)
 	{
-		i = 0;
-		full_philos = 0;
-		while (i < philosophers->table->n_philos)
-		{
-			if (check_death(philosophers))
-				break ;
-			if (philosophers[i].is_full)
-				full_philos++;
-			i++;
-		}
-		if (full_philos == philosophers->table->n_philos)
+		if (check_stop(philosophers))
 			break ;
 	}
 	return (0);

@@ -67,15 +67,24 @@ char	check_death(t_philo *philosophers)
 	unsigned long	i;
 	char			is_dead;
 	unsigned long	time_since_last_meal;
+	unsigned long	n_of_fulls;
 
+	n_of_fulls = 0;
 	i = 0;
-	time_since_last_meal = gettime() - philosophers[i].last_meal_time;
-	is_dead = time_since_last_meal >= philosophers->table->die_time;
-	if (is_dead && !philosophers[i].is_full)
+	while (i < philosophers->table->n_philos)
 	{
-		print_status(&philosophers[i], DIED);
-		philosophers->table->is_dinner_finished = 1;
-		return (1);
+		if (philosophers[i].is_full)
+			n_of_fulls++;
+		time_since_last_meal = gettime() - philosophers[i].last_meal_time;
+		is_dead = time_since_last_meal >= philosophers->table->die_time;
+		if (is_dead && !philosophers[i].is_full)
+		{
+			die(&philosophers[i]);
+			return (1);
+		}
+		i++;
 	}
+	if (n_of_fulls == philosophers->table->n_philos)
+		return (1);
 	return (0);
 }
