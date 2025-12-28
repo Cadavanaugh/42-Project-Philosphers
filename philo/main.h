@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/23 18:13:03 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/28 13:31:40 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void					precise_sleep_ms(long time_to_sleep_in_ms);
 char					assign_forks(t_philo *philosopher);
 void					print_status(t_philo *philosopher,
 							t_philo_status status);
-void					eat(t_philo *philosopher);
+char					eat(t_philo *philosopher);
 void					sleep(t_philo *philosopher);
 void					set_char(pthread_mutex_t *mutex, char *attr,
 							char value);
@@ -79,6 +79,6 @@ void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
 							unsigned long value);
 unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
-void					think(t_philo *philosopher, long think_time_in_ms);
+void					think(t_philo *philosopher);
 void					wait_all_threads(t_table *table);
-char					check_death(t_philo *philosophers);
+char					check_stop(t_philo *philosophers);
