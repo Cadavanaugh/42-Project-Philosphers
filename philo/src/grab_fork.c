@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:29:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/28 14:15:30 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/28 16:22:27 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static char	grab_try(t_philo *philosopher, pthread_mutex_t *fork_mutex)
 {
 	pthread_mutex_lock(fork_mutex);
-	if (philosopher->table->is_dinner_finished)
+	if (get_char(&philosopher->table->table_mutex,
+			&philosopher->table->is_dinner_finished))
 	{
 		pthread_mutex_unlock(fork_mutex);
 		return (0);

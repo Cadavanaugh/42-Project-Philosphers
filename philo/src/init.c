@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/28 14:12:28 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/29 21:21:24 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 
 static void	*dinner_routine(void *arg)
 {
-	t_philo	*philosopher;
+	t_philo			*philosopher;
+	unsigned long	current_running;
 
 	philosopher = (t_philo *)arg;
+	current_running = get_long(&philosopher->table->table_mutex,
+			&philosopher->table->n_threads_running);
 	set_long(&philosopher->table->table_mutex,
-		&philosopher->table->n_threads_running,
-		philosopher->table->n_threads_running + 1);
+		&philosopher->table->n_threads_running, current_running + 1);
 	wait_all_threads(philosopher->table);
-	while (!philosopher->is_full && !philosopher->table->is_dinner_finished)
+	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex,
+			&philosopher->table->is_dinner_finished))
 	{
 		if (!philosopher->has_eaten)
 		{
@@ -69,28 +72,6 @@ static void	init_philos_and_forks(t_table *table)
 			&table->philosophers[i]);
 		i++;
 	}
-}
-
-static void	*waiter_routine(void *arg)
-{
-	t_philo	*philosophers;
-
-	philosophers = (t_philo *)arg;
-	wait_all_threads(philosophers->table);
-	while (!philosophers->table->is_dinner_finished)
-	{
-		if (check_stop(philosophers))
-			break ;
-	}
-	return (0);
-}
-
-static void	init_waiter(t_philo *philosophers)
-{
-	pthread_t	waiter_thread;
-
-	pthread_create(&waiter_thread, NULL, &waiter_routine, philosophers);
-	pthread_join(waiter_thread, NULL);
 }
 
 char	init_table(t_table *table, int argc, char *argv[])

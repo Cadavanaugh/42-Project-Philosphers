@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/28 13:31:40 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/29 21:13:39 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_philo
 	t_fork				*left_fork;
 	t_fork				*right_fork;
 	pthread_t			thread;
-	pthread_mutex_t		philo_mutex;
 	t_table				*table;
 }						t_philo;
 
@@ -73,6 +72,7 @@ void					print_status(t_philo *philosopher,
 							t_philo_status status);
 char					eat(t_philo *philosopher);
 void					sleep(t_philo *philosopher);
+void					die(t_philo *philosopher);
 void					set_char(pthread_mutex_t *mutex, char *attr,
 							char value);
 void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
@@ -82,3 +82,4 @@ char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
 void					wait_all_threads(t_table *table);
 char					check_stop(t_philo *philosophers);
+void					init_waiter(t_philo *philosophers);

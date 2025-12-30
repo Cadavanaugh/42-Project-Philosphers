@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/28 14:14:32 by jode-cas         ###   ########.fr       */
+/*   Updated: 2025/12/29 21:12:54 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 {
 	long	elapsed_time;
 
-	if (philosopher->table->is_dinner_finished && status != DIED)
+	if (get_char(&philosopher->table->table_mutex,
+			&philosopher->table->is_dinner_finished) && status != DIED)
 		return ;
 	elapsed_time = gettime() - philosopher->table->start_time;
 	if (status == EAT)
@@ -41,7 +42,8 @@ char	eat(t_philo *philosopher)
 	philosopher->meals_made++;
 	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
 	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
-	if (philosopher->meals_made == philosopher->table->limit_meals)
+	if (philosopher->meals_made == get_long(&philosopher->table->table_mutex,
+			&philosopher->table->limit_meals))
 		philosopher->is_full = 1;
 	return (1);
 }
@@ -71,37 +73,12 @@ void	think(t_philo *philosopher)
 	}
 }
 
-static void	die(t_philo *philosopher)
+void	die(t_philo *philosopher)
 {
 	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
 	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
 	print_status(philosopher, DIED);
-	philosopher->table->is_dinner_finished = 1;
+	set_char(&philosopher->table->table_mutex,
+		&philosopher->table->is_dinner_finished, 1);
 }
 
-char	check_stop(t_philo *philosophers)
-{
-	unsigned long	i;
-	char			is_dead;
-	unsigned long	time_since_last_meal;
-	unsigned long	n_of_fulls;
-
-	n_of_fulls = 0;
-	i = 0;
-	while (i < philosophers->table->n_philos)
-	{
-		if (philosophers[i].is_full)
-			n_of_fulls++;
-		time_since_last_meal = gettime() - philosophers[i].last_meal_time;
-		is_dead = time_since_last_meal >= philosophers->table->die_time;
-		if (is_dead && !philosophers[i].is_full)
-		{
-			die(&philosophers[i]);
-			return (1);
-		}
-		i++;
-	}
-	if (n_of_fulls == philosophers->table->n_philos)
-		return (1);
-	return (0);
-}
