@@ -26,22 +26,9 @@ static void	*dinner_routine(void *arg)
 	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex,
 			&philosopher->table->is_dinner_finished))
 	{
-		if (!philosopher->has_eaten)
-		{
-			if (eat(philosopher))
-				philosopher->has_eaten = 1;
-		}
-		else if (!philosopher->has_slept)
-		{
-			sleep(philosopher);
-			philosopher->has_slept = 1;
-		}
-		else
-		{
-			philosopher->has_eaten = 0;
-			philosopher->has_slept = 0;
-			think(philosopher);
-		}
+		eat(philosopher);
+		sleep(philosopher);
+		think(philosopher);
 	}
 	return (0);
 }

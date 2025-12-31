@@ -34,6 +34,8 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 
 char	eat(t_philo *philosopher)
 {
+	if (philosopher->has_eaten)
+		return 0;
 	if (!assign_forks(philosopher))
 		return (0);
 	philosopher->last_meal_time = gettime();
@@ -45,13 +47,17 @@ char	eat(t_philo *philosopher)
 	if (philosopher->meals_made == get_long(&philosopher->table->table_mutex,
 			&philosopher->table->limit_meals))
 		philosopher->is_full = 1;
+	philosopher->has_eaten = 1;
 	return (1);
 }
 
 void	sleep(t_philo *philosopher)
 {
+	if (philosopher->has_slept)
+		return ;
 	print_status(philosopher, SLEEP);
 	precise_sleep_ms(philosopher->table->sleep_time);
+	philosopher->has_slept = 1;
 }
 
 void	think(t_philo *philosopher)
@@ -71,6 +77,8 @@ void	think(t_philo *philosopher)
 			precise_sleep_ms(philosopher->table->eat_time * 2
 				- philosopher->table->sleep_time);
 	}
+	philosopher->has_eaten = 0;
+	philosopher->has_slept = 0;
 }
 
 void	die(t_philo *philosopher)
