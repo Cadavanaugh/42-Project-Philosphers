@@ -24,17 +24,16 @@ int	main(int argc, char *argv[])
 	}
 	if (!init_table(&table, argc, argv))
 		return (1);
-	i = 0;
-	while (i < table.n_philos)
+	i = -1;
+	while (++i < table.n_philos)
 	{
 		pthread_join(table.philosophers[i].thread, NULL);
 		i++;
 	}
-	i = 0;
-	while (i < table.n_philos)
+	i = -1;
+	while (++i < table.n_philos)
 	{
 		pthread_mutex_destroy(&table.forks[i].fork_mutex);
-		i++;
 	}
 	pthread_mutex_destroy(&table.table_mutex);
 	return (0);
