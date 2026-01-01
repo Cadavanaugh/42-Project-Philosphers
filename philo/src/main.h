@@ -20,7 +20,6 @@ typedef struct s_philo	t_philo;
 
 typedef struct s_fork
 {
-	long				id;
 	pthread_mutex_t		fork_mutex;
 }						t_fork;
 
