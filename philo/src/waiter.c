@@ -44,12 +44,14 @@ static void	*waiter_routine(void *arg)
 	t_philo	*philosophers;
 
 	philosophers = (t_philo *)arg;
-	wait_all_threads(philosophers->table);
-	while (!get_char(&philosophers->table->table_mutex,
-			&philosophers->table->is_dinner_finished))
+	while (1)
 	{
-		if (check_stop(philosophers))
-			break ;
+		if(check_stop(philosophers))
+		{
+			set_char(&philosophers->table->table_mutex,
+				&philosophers->table->is_dinner_finished, 1);
+			break;
+		}
 	}
 	return (0);
 }

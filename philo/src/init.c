@@ -18,13 +18,9 @@ static void	*dinner_routine(void *arg)
 	unsigned long	current_running;
 
 	philosopher = (t_philo *)arg;
-	current_running = get_long(&philosopher->table->table_mutex,
-			&philosopher->table->n_threads_running);
-	set_long(&philosopher->table->table_mutex,
-		&philosopher->table->n_threads_running, current_running + 1);
-	wait_all_threads(philosopher->table);
-	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex,
-			&philosopher->table->is_dinner_finished))
+	while (!get_char(&philosopher->table->table_mutex, &philosopher->table->all_threads_running))
+		;
+	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
 	{
 		eat(philosopher);
 		sleep(philosopher);
@@ -40,6 +36,7 @@ static void	init_philos_and_forks(t_table *table)
 	i = 0;
 	while (i < table->n_philos)
 	{
+		table->forks[i].id = i;
 		pthread_mutex_init(&table->forks[i].fork_mutex, NULL);
 		table->philosophers[i].id = i + 1;
 		table->philosophers[i].is_full = 0;
@@ -58,6 +55,8 @@ static void	init_philos_and_forks(t_table *table)
 			&table->philosophers[i]);
 		i++;
 	}
+	set_long(&table->table_mutex, &table->start_time, gettime());
+	set_char(&table->table_mutex, &table->all_threads_running, 1);
 }
 
 char	init_table(t_table *table, int argc, char *argv[])

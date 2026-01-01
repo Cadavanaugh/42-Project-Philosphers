@@ -32,7 +32,7 @@ typedef struct s_table
 	unsigned long		sleep_time;
 	unsigned long		start_time;
 	char				is_dinner_finished;
-	unsigned long		n_threads_running;
+	char		all_threads_running;
 	t_philo				*philosophers;
 	t_fork				*forks;
 	pthread_mutex_t		table_mutex;
