@@ -34,20 +34,18 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 
 char	eat(t_philo *philosopher)
 {
-	if (philosopher->has_eaten)
-		return 0;
-	if (!assign_forks(philosopher))
+	if (!assign_forks(philosopher) || philosopher->has_eaten)
 		return (0);
 	philosopher->last_meal_time = gettime();
 	print_status(philosopher, EAT);
 	precise_sleep_ms(philosopher->table->eat_time);
 	philosopher->meals_made++;
+	philosopher->has_eaten = 1;
 	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
 	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
 	if (philosopher->meals_made == get_long(&philosopher->table->table_mutex,
 			&philosopher->table->limit_meals))
 		philosopher->is_full = 1;
-	philosopher->has_eaten = 1;
 	return (1);
 }
 
