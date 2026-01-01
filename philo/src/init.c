@@ -15,7 +15,6 @@
 static void	*dinner_routine(void *arg)
 {
 	t_philo			*philosopher;
-	unsigned long	current_running;
 
 	philosopher = (t_philo *)arg;
 	while (!get_char(&philosopher->table->table_mutex, &philosopher->table->all_threads_running))
