@@ -40,7 +40,6 @@ static void	init_philos_and_forks(t_table *table)
 	i = 0;
 	while (i < table->n_philos)
 	{
-		table->forks[i].id = i;
 		pthread_mutex_init(&table->forks[i].fork_mutex, NULL);
 		table->philosophers[i].id = i + 1;
 		table->philosophers[i].is_full = 0;
