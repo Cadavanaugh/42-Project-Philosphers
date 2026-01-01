@@ -48,6 +48,8 @@ char	assign_forks(t_philo *philosopher)
 		grab_try(philosopher, &philosopher->right_fork->fork_mutex);
 		return (0);
 	}
+	if (philosopher->id % 2 == 1 && philosopher->id == philosopher->table->n_philos)
+		precise_sleep_ms(1);
 	if (philosopher->id % 2 == 0)
 		return (even_grab(philosopher));
 	else
