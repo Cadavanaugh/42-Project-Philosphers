@@ -36,6 +36,7 @@ typedef struct s_table
 	t_philo				*philosophers;
 	t_fork				*forks;
 	pthread_mutex_t		table_mutex;
+	pthread_mutex_t		write_mutex;
 }						t_table;
 
 typedef struct s_philo

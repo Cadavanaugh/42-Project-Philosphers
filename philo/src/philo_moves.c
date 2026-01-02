@@ -14,8 +14,9 @@
 
 void	print_status(t_philo *philosopher, t_philo_status status)
 {
-	long	elapsed_time;
-
+	unsigned long	elapsed_time;
+	
+	pthread_mutex_lock(&philosopher->table->write_mutex);
 	if (get_char(&philosopher->table->table_mutex,
 			&philosopher->table->is_dinner_finished) && status != DIED)
 		return ;
@@ -30,6 +31,7 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 		printf("%ld %ld has taken a fork\n", elapsed_time, philosopher->id);
 	else if (status == DIED)
 		printf("%ld %ld died\n", elapsed_time, philosopher->id);
+	pthread_mutex_unlock(&philosopher->table->write_mutex);
 }
 
 char	eat(t_philo *philosopher)
