@@ -33,8 +33,11 @@ int	main(int argc, char *argv[])
 	i = -1;
 	while (++i < table.n_philos)
 	{
+		pthread_mutex_unlock(&table.forks[i].fork_mutex);
 		pthread_mutex_destroy(&table.forks[i].fork_mutex);
 	}
+	pthread_mutex_unlock(&table.write_mutex);
+	pthread_mutex_unlock(&table.table_mutex);
 	pthread_mutex_destroy(&table.table_mutex);
 	return (0);
 }
