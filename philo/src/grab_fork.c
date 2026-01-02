@@ -45,8 +45,11 @@ char	assign_forks(t_philo *philosopher)
 {
 	if (philosopher->table->n_philos == 1)
 	{
-		print_status(philosopher, TAKEN_FORK);
-		philosopher->has_eaten = 1;
+		if (!philosopher->has_eaten)
+		{
+			print_status(philosopher, TAKEN_FORK);
+			philosopher->has_eaten = 1;
+		}
 		return (0);
 	}
 	if (philosopher->id % 2 == 1 && philosopher->id == philosopher->table->n_philos)
