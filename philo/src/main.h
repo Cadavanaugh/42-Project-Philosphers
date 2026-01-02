@@ -79,6 +79,5 @@ void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
 unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
-void					wait_all_threads(t_table *table);
-char					check_stop(t_philo *philosophers);
+char is_dead(t_philo *philosopher);
 void					init_waiter(t_philo *philosophers);

@@ -78,13 +78,3 @@ void	think(t_philo *philosopher)
 	philosopher->has_eaten = 0;
 	philosopher->has_slept = 0;
 }
-
-void	die(t_philo *philosopher)
-{
-	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
-	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
-	print_status(philosopher, DIED);
-	set_char(&philosopher->table->table_mutex,
-		&philosopher->table->is_dinner_finished, 1);
-}
-

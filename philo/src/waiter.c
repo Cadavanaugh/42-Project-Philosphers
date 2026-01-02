@@ -12,27 +12,19 @@
 
 #include "main.h"
 
-char	check_stop(t_philo *philosophers)
+static char	check_stop(t_philo *philosophers)
 {
 	unsigned long	i;
-	char			is_dead;
-	unsigned long	time_since_last_meal;
 	unsigned long	n_of_fulls;
 
 	n_of_fulls = 0;
-	i = 0;
-	while (i < philosophers->table->n_philos)
+	i = -1;
+	while (++i < philosophers->table->n_philos)
 	{
 		if (philosophers[i].is_full)
 			n_of_fulls++;
-		time_since_last_meal = gettime() - philosophers[i].last_meal_time;
-		is_dead = time_since_last_meal >= philosophers->table->die_time;
-		if (is_dead && !philosophers[i].is_full)
-		{
-			die(&philosophers[i]);
+		else if (is_dead(&philosophers[i]))
 			return (1);
-		}
-		i++;
 	}
 	if (n_of_fulls == philosophers->table->n_philos)
 		return (1);

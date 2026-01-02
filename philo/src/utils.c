@@ -47,30 +47,12 @@ char	get_char(pthread_mutex_t *mutex, char *attr)
 	return (value);
 }
 
-// void	wait_all_threads(t_table *table)
-// {
-// 	while (get_long(&table->table_mutex,
-// 			&table->n_threads_running) < table->n_philos)
-// 	{
-// 		printf("Running: %lu\n", get_long(&table->table_mutex,
-// 			&table->n_threads_running));
-// 	}
-// 	set_long(&table->table_mutex, &table->start_time, gettime());
-// }
-
-void	wait_all_threads(t_table *table)
+char is_dead(t_philo *philosopher)
 {
-    while (1)
-    {
-        pthread_mutex_lock(&table->table_mutex);
-        if (table->n_threads_running >= table->n_philos)
-        {
-            pthread_mutex_unlock(&table->table_mutex);
-            break;
-        }
-        pthread_mutex_unlock(&table->table_mutex);
-    }
-    pthread_mutex_lock(&table->table_mutex);
-    table->start_time = gettime();
-    pthread_mutex_unlock(&table->table_mutex);
+	char			is_dead;
+	unsigned long	time_since_last_meal;
+
+	time_since_last_meal = gettime() - philosopher->last_meal_time;
+	is_dead = time_since_last_meal >= philosopher->table->die_time;
+	return is_dead;
 }

@@ -21,10 +21,18 @@ static void	*dinner_routine(void *arg)
 		;
 	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
 	{
-		eat(philosopher);
-		sleep(philosopher);
-		think(philosopher);
+		if(eat(philosopher))
+		{
+			sleep(philosopher);
+			think(philosopher);
+		}
+		if (is_dead(philosopher))
+		{
+			print_status(philosopher, DIED);
+			break;
+		}
 	}
+	pthread_mutex_unlock(&philosopher->table->write_mutex);
 	return (0);
 }
 
@@ -35,7 +43,6 @@ static void	init_philos_and_forks(t_table *table)
 	i = 0;
 	while (i < table->n_philos)
 	{
-		table->forks[i].id = i;
 		pthread_mutex_init(&table->forks[i].fork_mutex, NULL);
 		table->philosophers[i].id = i + 1;
 		table->philosophers[i].is_full = 0;
@@ -61,7 +68,8 @@ static void	init_philos_and_forks(t_table *table)
 char	init_table(t_table *table, int argc, char *argv[])
 {
 	pthread_mutex_init(&table->table_mutex, NULL);
-	table->n_threads_running = 0;
+	pthread_mutex_init(&table->write_mutex, NULL);
+	table->all_threads_running = 0;
 	table->is_dinner_finished = 0;
 	table->n_philos = ft_atol(argv[1]);
 	table->die_time = ft_atol(argv[2]);
