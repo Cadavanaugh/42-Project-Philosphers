@@ -84,6 +84,6 @@ char	init_table(t_table *table, int argc, char *argv[])
 	if (!table->philosophers || !table->forks)
 		return (0);
 	init_philos_and_forks(table);
-	init_waiter(table->philosophers);
+	init_waiter(table);
 	return (1);
 }

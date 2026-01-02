@@ -33,25 +33,25 @@ static char	check_stop(t_philo *philosophers)
 
 static void	*waiter_routine(void *arg)
 {
-	t_philo	*philosophers;
+	t_table	*table;
 
-	philosophers = (t_philo *)arg;
+	table = (t_table *)arg;
 	while (1)
 	{
-		if(check_stop(philosophers))
+		if(check_stop(table->philosophers))
 		{
-			set_char(&philosophers->table->table_mutex,
-				&philosophers->table->is_dinner_finished, 1);
+			set_char(&table->table_mutex,
+				&table->is_dinner_finished, 1);
 			break;
 		}
 	}
 	return (0);
 }
 
-void	init_waiter(t_philo *philosophers)
+void	init_waiter(t_table *table)
 {
 	pthread_t	waiter_thread;
 
-	pthread_create(&waiter_thread, NULL, &waiter_routine, philosophers);
+	pthread_create(&waiter_thread, NULL, &waiter_routine, table);
 	pthread_join(waiter_thread, NULL);
 }

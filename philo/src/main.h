@@ -81,4 +81,4 @@ unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
 char is_dead(t_philo *philosopher);
-void					init_waiter(t_philo *philosophers);
+void					init_waiter(t_table *table);
