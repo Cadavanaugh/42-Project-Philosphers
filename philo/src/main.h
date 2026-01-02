@@ -72,7 +72,7 @@ void					print_status(t_philo *philosopher,
 							t_philo_status status);
 char					eat(t_philo *philosopher);
 void					sleep(t_philo *philosopher);
-void					die(t_philo *philosopher);
+char					die(t_philo *philosopher);
 void					set_char(pthread_mutex_t *mutex, char *attr,
 							char value);
 void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
