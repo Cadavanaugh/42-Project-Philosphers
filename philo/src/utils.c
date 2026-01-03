@@ -52,7 +52,10 @@ char is_dead(t_philo *philosopher)
 	char			is_dead;
 	unsigned long	time_since_last_meal;
 
-	time_since_last_meal = gettime() - philosopher->last_meal_time;
+	if (philosopher->last_meal_time == 0)
+		time_since_last_meal = gettime() - philosopher->table->start_time;
+	else
+		time_since_last_meal = gettime() - philosopher->last_meal_time;
 	is_dead = time_since_last_meal >= philosopher->table->die_time;
 	return is_dead;
 }
