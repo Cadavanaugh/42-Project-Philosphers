@@ -18,8 +18,11 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 	
 	pthread_mutex_lock(&philosopher->table->write_mutex);
 	if (get_char(&philosopher->table->table_mutex,
-			&philosopher->table->is_dinner_finished) && status != DIED)
+			&philosopher->table->is_dinner_finished))
+	{
+		pthread_mutex_unlock(&philosopher->table->write_mutex);
 		return ;
+	}
 	elapsed_time = gettime() - philosopher->table->start_time;
 	if (status == EAT)
 		printf("%ld %ld is eating\n", elapsed_time, philosopher->id);
@@ -53,7 +56,7 @@ char	eat(t_philo *philosopher)
 
 void	sleep(t_philo *philosopher)
 {
-	if (philosopher->has_slept)
+	if (philosopher->has_slept || get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
 		return ;
 	print_status(philosopher, SLEEP);
 	precise_sleep_ms(philosopher->table->sleep_time);
@@ -62,6 +65,8 @@ void	sleep(t_philo *philosopher)
 
 void	think(t_philo *philosopher)
 {
+	if (get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
+		return ;
 	print_status(philosopher, THINK);
 	if (philosopher->table->n_philos % 2 == 0)
 	{

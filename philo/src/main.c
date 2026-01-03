@@ -30,6 +30,8 @@ int	main(int argc, char *argv[])
 		pthread_join(table.philosophers[i].thread, NULL);
 		i++;
 	}
+	pthread_mutex_unlock(&
+		table.write_mutex);
 	i = -1;
 	while (++i < table.n_philos)
 	{
@@ -37,7 +39,7 @@ int	main(int argc, char *argv[])
 		pthread_mutex_destroy(&table.forks[i].fork_mutex);
 	}
 	pthread_mutex_unlock(&table.write_mutex);
-	pthread_mutex_unlock(&table.table_mutex);
+	pthread_mutex_destroy(&table.write_mutex);
 	pthread_mutex_destroy(&table.table_mutex);
 	return (0);
 }

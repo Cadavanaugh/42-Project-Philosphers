@@ -21,18 +21,20 @@ static void	*dinner_routine(void *arg)
 		;
 	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
 	{
+		if (is_dead(philosopher))
+		{
+			print_status(philosopher, DIED);
+			pthread_mutex_lock(&philosopher->table->write_mutex);
+			set_char(&philosopher->table->table_mutex,
+				&philosopher->table->is_dinner_finished, 1);
+			break;
+		}
 		if(eat(philosopher))
 		{
 			sleep(philosopher);
 			think(philosopher);
 		}
-		if (is_dead(philosopher))
-		{
-			print_status(philosopher, DIED);
-			break;
-		}
 	}
-	pthread_mutex_unlock(&philosopher->table->write_mutex);
 	return (0);
 }
 
@@ -49,7 +51,7 @@ static void	init_philos_and_forks(t_table *table)
 		table->philosophers[i].has_eaten = 0;
 		table->philosophers[i].has_slept = 0;
 		table->philosophers[i].meals_made = 0;
-		table->philosophers[i].last_meal_time = gettime();
+		table->philosophers[i].last_meal_time = 0;
 		table->philosophers[i].table = table;
 		table->philosophers[i].right_fork = &table->forks[i];
 		if (i == 0)
@@ -84,6 +86,6 @@ char	init_table(t_table *table, int argc, char *argv[])
 	if (!table->philosophers || !table->forks)
 		return (0);
 	init_philos_and_forks(table);
-	init_waiter(table);
+	// init_waiter(table);
 	return (1);
 }
