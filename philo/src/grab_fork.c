@@ -12,13 +12,15 @@
 
 #include "main.h"
 
-static char	grab_try(t_philo *philosopher, pthread_mutex_t *fork_mutex)
+static char	grab_try(t_philo *philosopher, t_fork *fork)
 {
-	pthread_mutex_lock(fork_mutex);
+	pthread_mutex_lock(&fork->fork_mutex);
+	fork->in_use = 1;
 	if (get_char(&philosopher->table->table_mutex,
 			&philosopher->table->is_dinner_finished))
 	{
-		pthread_mutex_unlock(fork_mutex);
+		pthread_mutex_unlock(&fork->fork_mutex);
+		fork->in_use = 0;
 		return (0);
 	}
 	print_status(philosopher, TAKEN_FORK);
@@ -27,16 +29,16 @@ static char	grab_try(t_philo *philosopher, pthread_mutex_t *fork_mutex)
 
 static char	even_grab(t_philo *philosopher)
 {
-	if (grab_try(philosopher, &philosopher->right_fork->fork_mutex)
-		&& grab_try(philosopher, &philosopher->left_fork->fork_mutex))
+	if (grab_try(philosopher, philosopher->right_fork)
+		&& grab_try(philosopher, philosopher->left_fork))
 		return (1);
 	return (0);
 }
 
 static char	odd_grab(t_philo *philosopher)
 {
-	if (grab_try(philosopher, &philosopher->left_fork->fork_mutex)
-		&& grab_try(philosopher, &philosopher->right_fork->fork_mutex))
+	if (grab_try(philosopher, philosopher->left_fork)
+		&& grab_try(philosopher, philosopher->right_fork))
 		return (1);
 	return (0);
 }
@@ -58,4 +60,12 @@ char	assign_forks(t_philo *philosopher)
 		return (even_grab(philosopher));
 	else
 		return (odd_grab(philosopher));
+}
+
+void release_forks(t_philo *philosopher)
+{
+	if (philosopher->left_fork->in_use)
+		pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
+	if (philosopher->right_fork->in_use)
+		pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
 }

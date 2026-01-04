@@ -21,6 +21,7 @@ typedef struct s_philo	t_philo;
 typedef struct s_fork
 {
 	pthread_mutex_t		fork_mutex;
+	char in_use;
 }						t_fork;
 
 typedef struct s_table
@@ -81,3 +82,4 @@ char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
 char is_dead(t_philo *philosopher);
 void					init_waiter(t_table *table);
+void release_forks(t_philo *philosopher);

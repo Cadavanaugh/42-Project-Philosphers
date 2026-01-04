@@ -36,8 +36,7 @@ static void	*dinner_routine(void *arg)
 			think(philosopher);
 		}
 	}
-	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
-	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
+	release_forks(philosopher);
 	return (0);
 }
 
