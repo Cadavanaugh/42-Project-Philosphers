@@ -18,8 +18,7 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 
 	elapsed_time = gettime() - philosopher->table->start_time;
 	pthread_mutex_lock(&philosopher->table->write_mutex);
-	if (get_char(&philosopher->table->table_mutex,
-			&philosopher->table->is_dinner_finished))
+	if (is_dinner_finished(philosopher->table))
 	{
 		pthread_mutex_unlock(&philosopher->table->write_mutex);
 		return ;
@@ -66,8 +65,7 @@ void	sleep(t_philo *philosopher)
 
 void	think(t_philo *philosopher)
 {
-	if (get_char(&philosopher->table->table_mutex,
-			&philosopher->table->is_dinner_finished))
+	if (is_dinner_finished(philosopher->table))
 		return ;
 	print_status(philosopher, THINK);
 	if (philosopher->table->n_philos % 2 == 0)

@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 13:36:31 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 15:17:27 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,5 @@ unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
 char					is_dead(t_philo *philosopher);
-void					init_waiter(t_table *table);
 void					release_forks(t_philo *philosopher);
+char					is_dinner_finished(t_table *table);
