@@ -27,6 +27,7 @@ static void	*dinner_routine(void *arg)
 			pthread_mutex_lock(&philosopher->table->write_mutex);
 			set_char(&philosopher->table->table_mutex,
 				&philosopher->table->is_dinner_finished, 1);
+			pthread_mutex_unlock(&philosopher->table->write_mutex);
 			break;
 		}
 		if(eat(philosopher))
@@ -37,7 +38,6 @@ static void	*dinner_routine(void *arg)
 	}
 	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
 	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
-	pthread_mutex_unlock(&philosopher->table->write_mutex);
 	return (0);
 }
 
