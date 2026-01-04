@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 15:24:43 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 15:30:16 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@ static void	*dinner_routine(void *arg)
 		if (is_dead(philosopher))
 		{
 			pthread_mutex_lock(&philosopher->table->write_mutex);
-			printf("%ld %ld died\n", gettime()
-				- get_long(&philosopher->table->table_mutex,
-					&philosopher->table->start_time), philosopher->id);
+			printf("%ld %ld died\n", gettime() - philosopher->table->start_time,
+				philosopher->id);
 			set_char(&philosopher->table->table_mutex,
 				&philosopher->table->is_dinner_finished, 1);
 			pthread_mutex_unlock(&philosopher->table->write_mutex);
