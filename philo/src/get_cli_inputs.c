@@ -6,13 +6,12 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:12:53 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/13 19:26:41 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:36:08 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-// if is not '-' or '+' neither a number return 0
 static unsigned char	is_valid_for_atol(const char *nptr)
 {
 	int	i;

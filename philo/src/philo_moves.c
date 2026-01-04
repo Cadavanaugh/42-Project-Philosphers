@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 13:23:51 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:36:34 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ char	eat(t_philo *philosopher)
 
 void	sleep(t_philo *philosopher)
 {
-	if (philosopher->has_slept || get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
+	if (philosopher->has_slept || get_char(&philosopher->table->table_mutex,
+			&philosopher->table->is_dinner_finished))
 		return ;
 	print_status(philosopher, SLEEP);
 	precise_sleep_ms(philosopher->table->sleep_time);
@@ -65,7 +66,8 @@ void	sleep(t_philo *philosopher)
 
 void	think(t_philo *philosopher)
 {
-	if (get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
+	if (get_char(&philosopher->table->table_mutex,
+			&philosopher->table->is_dinner_finished))
 		return ;
 	print_status(philosopher, THINK);
 	if (philosopher->table->n_philos % 2 == 0)

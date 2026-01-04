@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 13:23:25 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:37:25 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 static void	*dinner_routine(void *arg)
 {
-	t_philo			*philosopher;
+	t_philo	*philosopher;
 
 	philosopher = (t_philo *)arg;
-	while (!get_char(&philosopher->table->table_mutex, &philosopher->table->all_threads_running))
+	while (!get_char(&philosopher->table->table_mutex,
+			&philosopher->table->all_threads_running))
 		;
-	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex, &philosopher->table->is_dinner_finished))
+	while (!philosopher->is_full && !get_char(&philosopher->table->table_mutex,
+			&philosopher->table->is_dinner_finished))
 	{
 		if (is_dead(philosopher))
 		{
@@ -28,9 +30,8 @@ static void	*dinner_routine(void *arg)
 			set_char(&philosopher->table->table_mutex,
 				&philosopher->table->is_dinner_finished, 1);
 			pthread_mutex_unlock(&philosopher->table->write_mutex);
-			break;
 		}
-		else if(eat(philosopher))
+		else if (eat(philosopher))
 		{
 			sleep(philosopher);
 			think(philosopher);
@@ -87,6 +88,5 @@ char	init_table(t_table *table, int argc, char *argv[])
 	if (!table->philosophers || !table->forks)
 		return (0);
 	init_philos_and_forks(table);
-	// init_waiter(table);
 	return (1);
 }

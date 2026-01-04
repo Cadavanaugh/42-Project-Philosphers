@@ -6,15 +6,15 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:51 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/28 16:23:32 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:36:25 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-static void cleanup(t_table *table)
+static void	cleanup(t_table *table)
 {
-	unsigned long i;
+	unsigned long	i;
 
 	i = -1;
 	while (++i < table->n_philos)

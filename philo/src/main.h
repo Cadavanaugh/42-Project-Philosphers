@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/29 21:13:39 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:36:31 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_philo	t_philo;
 typedef struct s_fork
 {
 	pthread_mutex_t		fork_mutex;
-	char in_use;
+	char				in_use;
 }						t_fork;
 
 typedef struct s_table
@@ -33,7 +33,7 @@ typedef struct s_table
 	unsigned long		sleep_time;
 	unsigned long		start_time;
 	char				is_dinner_finished;
-	char		all_threads_running;
+	char				all_threads_running;
 	t_philo				*philosophers;
 	t_fork				*forks;
 	pthread_mutex_t		table_mutex;
@@ -80,6 +80,6 @@ void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
 unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
-char is_dead(t_philo *philosopher);
+char					is_dead(t_philo *philosopher);
 void					init_waiter(t_table *table);
-void release_forks(t_philo *philosopher);
+void					release_forks(t_philo *philosopher);

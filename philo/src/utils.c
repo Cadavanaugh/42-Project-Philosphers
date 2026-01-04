@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 13:36:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/29 21:58:40 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:37:13 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	get_char(pthread_mutex_t *mutex, char *attr)
 	return (value);
 }
 
-char is_dead(t_philo *philosopher)
+char	is_dead(t_philo *philosopher)
 {
 	char			is_dead;
 	unsigned long	time_since_last_meal;
@@ -57,5 +57,5 @@ char is_dead(t_philo *philosopher)
 	else
 		time_since_last_meal = gettime() - philosopher->last_meal_time;
 	is_dead = time_since_last_meal >= philosopher->table->die_time;
-	return is_dead;
+	return (is_dead);
 }
