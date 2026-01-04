@@ -35,6 +35,9 @@ static void	*dinner_routine(void *arg)
 			think(philosopher);
 		}
 	}
+	pthread_mutex_unlock(&philosopher->left_fork->fork_mutex);
+	pthread_mutex_unlock(&philosopher->right_fork->fork_mutex);
+	pthread_mutex_unlock(&philosopher->table->write_mutex);
 	return (0);
 }
 
@@ -42,8 +45,8 @@ static void	init_philos_and_forks(t_table *table)
 {
 	unsigned long	i;
 
-	i = 0;
-	while (i < table->n_philos)
+	i = -1;
+	while (++i < table->n_philos)
 	{
 		pthread_mutex_init(&table->forks[i].fork_mutex, NULL);
 		table->philosophers[i].id = i + 1;
@@ -61,7 +64,6 @@ static void	init_philos_and_forks(t_table *table)
 			table->philosophers[i].left_fork = &table->forks[i - 1];
 		pthread_create(&table->philosophers[i].thread, NULL, &dinner_routine,
 			&table->philosophers[i]);
-		i++;
 	}
 	set_long(&table->table_mutex, &table->start_time, gettime());
 	set_char(&table->table_mutex, &table->all_threads_running, 1);

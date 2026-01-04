@@ -12,6 +12,19 @@
 
 #include "main.h"
 
+static void cleanup(t_table *table)
+{
+	unsigned long i;
+
+	i = -1;
+	while (++i < table->n_philos)
+		pthread_mutex_destroy(&table->forks[i].fork_mutex);
+	pthread_mutex_destroy(&table->write_mutex);
+	pthread_mutex_destroy(&table->table_mutex);
+	free(table->philosophers);
+	free(table->forks);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_table			table;
@@ -26,20 +39,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	i = -1;
 	while (++i < table.n_philos)
-	{
 		pthread_join(table.philosophers[i].thread, NULL);
-		i++;
-	}
-	pthread_mutex_unlock(&
-		table.write_mutex);
-	i = -1;
-	while (++i < table.n_philos)
-	{
-		pthread_mutex_unlock(&table.forks[i].fork_mutex);
-		pthread_mutex_destroy(&table.forks[i].fork_mutex);
-	}
-	pthread_mutex_unlock(&table.write_mutex);
-	pthread_mutex_destroy(&table.write_mutex);
-	pthread_mutex_destroy(&table.table_mutex);
+	cleanup(&table);
 	return (0);
 }
