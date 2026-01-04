@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 13:36:34 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 15:19:39 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 {
 	unsigned long	elapsed_time;
 
-	elapsed_time = gettime() - philosopher->table->start_time;
+	elapsed_time = gettime() - get_long(&philosopher->table->table_mutex,
+			&philosopher->table->start_time);
 	pthread_mutex_lock(&philosopher->table->write_mutex);
 	if (is_dinner_finished(philosopher->table))
 	{
@@ -31,8 +32,6 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 		printf("%ld %ld is thinking\n", elapsed_time, philosopher->id);
 	else if (status == TAKEN_FORK)
 		printf("%ld %ld has taken a fork\n", elapsed_time, philosopher->id);
-	else if (status == DIED)
-		printf("%ld %ld died\n", elapsed_time, philosopher->id);
 	pthread_mutex_unlock(&philosopher->table->write_mutex);
 }
 
@@ -40,8 +39,8 @@ char	eat(t_philo *philosopher)
 {
 	if (!assign_forks(philosopher) || philosopher->has_eaten)
 		return (0);
-	philosopher->last_meal_time = gettime();
 	print_status(philosopher, EAT);
+	philosopher->last_meal_time = gettime();
 	precise_sleep_ms(philosopher->table->eat_time);
 	philosopher->meals_made++;
 	philosopher->has_eaten = 1;
@@ -55,8 +54,7 @@ char	eat(t_philo *philosopher)
 
 void	sleep(t_philo *philosopher)
 {
-	if (philosopher->has_slept || get_char(&philosopher->table->table_mutex,
-			&philosopher->table->is_dinner_finished))
+	if (philosopher->has_slept || is_dinner_finished(philosopher->table))
 		return ;
 	print_status(philosopher, SLEEP);
 	precise_sleep_ms(philosopher->table->sleep_time);
@@ -84,4 +82,17 @@ void	think(t_philo *philosopher)
 	}
 	philosopher->has_eaten = 0;
 	philosopher->has_slept = 0;
+}
+
+char	is_dead(t_philo *philosopher)
+{
+	char			is_dead;
+	unsigned long	time_since_last_meal;
+
+	if (philosopher->last_meal_time == 0)
+		time_since_last_meal = gettime() - philosopher->table->start_time;
+	else
+		time_since_last_meal = gettime() - philosopher->last_meal_time;
+	is_dead = time_since_last_meal >= philosopher->table->die_time;
+	return (is_dead);
 }
