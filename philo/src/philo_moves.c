@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/29 21:12:54 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:23:51 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	print_status(t_philo *philosopher, t_philo_status status)
 {
 	unsigned long	elapsed_time;
-	
+
+	elapsed_time = gettime() - philosopher->table->start_time;
 	pthread_mutex_lock(&philosopher->table->write_mutex);
 	if (get_char(&philosopher->table->table_mutex,
 			&philosopher->table->is_dinner_finished))
@@ -23,7 +24,6 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 		pthread_mutex_unlock(&philosopher->table->write_mutex);
 		return ;
 	}
-	elapsed_time = gettime() - philosopher->table->start_time;
 	if (status == EAT)
 		printf("%ld %ld is eating\n", elapsed_time, philosopher->id);
 	else if (status == SLEEP)
