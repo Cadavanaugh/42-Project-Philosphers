@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/29 21:21:24 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/04 13:23:25 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	*dinner_routine(void *arg)
 			pthread_mutex_unlock(&philosopher->table->write_mutex);
 			break;
 		}
-		if(eat(philosopher))
+		else if(eat(philosopher))
 		{
 			sleep(philosopher);
 			think(philosopher);
