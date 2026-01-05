@@ -23,8 +23,14 @@ unsigned long	gettime(void)
 void	precise_sleep_ms(long time_to_sleep_in_ms)
 {
 	unsigned long	initial_time;
+	unsigned long remaining_time;
+	unsigned long target_time;
 
 	initial_time = gettime();
-	while (gettime() < (initial_time + time_to_sleep_in_ms))
-		;
+	target_time = initial_time + time_to_sleep_in_ms;
+	while (gettime() < target_time)
+	{
+		remaining_time = target_time - gettime();
+		usleep(remaining_time / 2);
+	}
 }
