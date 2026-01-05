@@ -52,7 +52,7 @@ char	eat(t_philo *philosopher)
 	return (1);
 }
 
-void	sleep(t_philo *philosopher)
+void	snooze(t_philo *philosopher)
 {
 	if (philosopher->has_slept || is_anyone_dead(philosopher->table))
 		return ;

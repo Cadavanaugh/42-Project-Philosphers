@@ -24,7 +24,7 @@ static void	*dinner_routine(void *arg)
 	{
 		if (eat(philosopher))
 		{
-			sleep(philosopher);
+			snooze(philosopher);
 			think(philosopher);
 		}
 	}

@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
+#include <unistd.h>
 
 typedef struct s_philo	t_philo;
 
@@ -72,7 +73,7 @@ char					assign_forks(t_philo *philosopher);
 void					print_status(t_philo *philosopher,
 							t_philo_status status);
 char					eat(t_philo *philosopher);
-void					sleep(t_philo *philosopher);
+void					snooze(t_philo *philosopher);
 void					set_char(pthread_mutex_t *mutex, char *attr,
 							char value);
 void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
