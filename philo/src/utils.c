@@ -47,7 +47,7 @@ char	get_char(pthread_mutex_t *mutex, char *attr)
 	return (value);
 }
 
-char	is_dinner_finished(t_table *table)
+char	is_anyone_dead(t_table *table)
 {
-	return (get_char(&table->table_mutex, &table->is_dinner_finished));
+	return (get_char(&table->table_mutex, &table->is_anyone_dead));
 }

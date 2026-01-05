@@ -21,6 +21,7 @@ SRCS = $(SRC_FOLDER)main.c \
 				$(SRC_FOLDER)philo_moves.c \
 				$(SRC_FOLDER)utils.c \
 				$(SRC_FOLDER)grab_fork.c \
+				$(SRC_FOLDER)waiter.c
 
 OBJ_FOLDER = objs/
 OBJS = $(patsubst $(SRC_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRCS))

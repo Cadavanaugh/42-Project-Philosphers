@@ -32,7 +32,7 @@ typedef struct s_table
 	unsigned long		eat_time;
 	unsigned long		sleep_time;
 	unsigned long		start_time;
-	char				is_dinner_finished;
+	char				is_anyone_dead;
 	char				all_threads_running;
 	t_philo				*philosophers;
 	t_fork				*forks;
@@ -80,6 +80,6 @@ void					set_long(pthread_mutex_t *mutex, unsigned long *attr,
 unsigned long			get_long(pthread_mutex_t *mutex, unsigned long *attr);
 char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
-char					is_dead(t_philo *philosopher);
 void					release_forks(t_philo *philosopher);
-char					is_dinner_finished(t_table *table);
+char					is_anyone_dead(t_table *table);
+void	init_waiter(t_table *table);

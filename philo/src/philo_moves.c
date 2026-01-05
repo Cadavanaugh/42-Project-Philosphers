@@ -16,10 +16,10 @@ void	print_status(t_philo *philosopher, t_philo_status status)
 {
 	unsigned long	elapsed_time;
 
+	pthread_mutex_lock(&philosopher->table->write_mutex);
 	elapsed_time = gettime() - get_long(&philosopher->table->table_mutex,
 			&philosopher->table->start_time);
-	pthread_mutex_lock(&philosopher->table->write_mutex);
-	if (is_dinner_finished(philosopher->table))
+	if (is_anyone_dead(philosopher->table))
 	{
 		pthread_mutex_unlock(&philosopher->table->write_mutex);
 		return ;
@@ -54,7 +54,7 @@ char	eat(t_philo *philosopher)
 
 void	sleep(t_philo *philosopher)
 {
-	if (philosopher->has_slept || is_dinner_finished(philosopher->table))
+	if (philosopher->has_slept || is_anyone_dead(philosopher->table))
 		return ;
 	print_status(philosopher, SLEEP);
 	precise_sleep_ms(philosopher->table->sleep_time);
@@ -63,7 +63,7 @@ void	sleep(t_philo *philosopher)
 
 void	think(t_philo *philosopher)
 {
-	if (is_dinner_finished(philosopher->table))
+	if (is_anyone_dead(philosopher->table))
 		return ;
 	print_status(philosopher, THINK);
 	if (philosopher->table->n_philos % 2 == 0)
@@ -82,17 +82,4 @@ void	think(t_philo *philosopher)
 	}
 	philosopher->has_eaten = 0;
 	philosopher->has_slept = 0;
-}
-
-char	is_dead(t_philo *philosopher)
-{
-	char			is_dead;
-	unsigned long	time_since_last_meal;
-
-	if (philosopher->last_meal_time == 0)
-		time_since_last_meal = gettime() - philosopher->table->start_time;
-	else
-		time_since_last_meal = gettime() - philosopher->last_meal_time;
-	is_dead = time_since_last_meal >= philosopher->table->die_time;
-	return (is_dead);
 }
