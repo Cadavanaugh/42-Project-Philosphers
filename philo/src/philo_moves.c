@@ -65,6 +65,8 @@ void	think(t_philo *philosopher)
 {
 	if (is_anyone_dead(philosopher->table))
 		return ;
+	if (!philosopher->has_eaten && !philosopher->has_slept)
+		return ;
 	print_status(philosopher, THINK);
 	if (philosopher->table->n_philos % 2 == 0)
 	{
