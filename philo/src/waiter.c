@@ -18,7 +18,8 @@ static char	is_dead(t_philo *philosopher)
 	unsigned long	time_since_last_meal;
 
 	if (philosopher->last_meal_time == 0)
-		time_since_last_meal = gettime() - philosopher->table->start_time;
+		time_since_last_meal = gettime() - get_long(&philosopher->table->table_mutex,
+			&philosopher->table->start_time);
 	else
 		time_since_last_meal = gettime() - philosopher->last_meal_time;
 	is_dead = time_since_last_meal >= philosopher->table->die_time;
@@ -46,6 +47,7 @@ static void	*waiter_routine(void *arg)
 {
 	t_table	*table;
   unsigned long	i;
+	unsigned long	elapsed_time;
 
 	i = 0;
 	table = (t_table *)arg;
@@ -54,9 +56,10 @@ static void	*waiter_routine(void *arg)
 		if (is_dead(&table->philosophers[i]))
     {
       set_char(&table->table_mutex, &table->is_anyone_dead, 1);
+      elapsed_time = gettime() - get_long(&table->table_mutex,
+			  &table->start_time);
       pthread_mutex_lock(&table->write_mutex);
-      printf("%ld %ld died\n", gettime() - table->start_time,
-        table->philosophers[i].id);
+      printf("%ld %ld died\n", elapsed_time, table->philosophers[i].id);
       pthread_mutex_unlock(&table->write_mutex);
 			return (0);
     }
