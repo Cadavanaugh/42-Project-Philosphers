@@ -20,6 +20,8 @@ static void	*dinner_routine(void *arg)
 	while (!get_char(&philosopher->table->table_mutex,
 			&philosopher->table->all_threads_running))
 		;
+	if (philosopher->id % 2 == 0)
+		precise_sleep_ms(1);
 	while (!philosopher->is_full && !is_anyone_dead(philosopher->table))
 	{
 		if (eat(philosopher))
