@@ -53,10 +53,10 @@ static void	*waiter_routine(void *arg)
   {
 		if (is_dead(&table->philosophers[i]))
     {
+      set_char(&table->table_mutex, &table->is_anyone_dead, 1);
       pthread_mutex_lock(&table->write_mutex);
       printf("%ld %ld died\n", gettime() - table->start_time,
         table->philosophers[i].id);
-      set_char(&table->table_mutex, &table->is_anyone_dead, 1);
       pthread_mutex_unlock(&table->write_mutex);
 			return (0);
     }
