@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 09:15:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 15:36:57 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:39:38 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	eat(t_philo *philosopher)
 		return (0);
 	if (!assign_forks(philosopher) || philosopher->has_eaten)
 		return (0);
-	print_status(philosopher, EAT);
 	philosopher->last_meal_time = gettime();
+	print_status(philosopher, EAT);
 	precise_sleep_ms(philosopher->table->eat_time);
 	philosopher->meals_made++;
 	philosopher->has_eaten = 1;
