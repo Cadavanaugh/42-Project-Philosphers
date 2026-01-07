@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:51 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 13:36:25 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:58:09 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ static void	cleanup(t_table *table)
 
 	i = -1;
 	while (++i < table->n_philos)
+	{
 		pthread_mutex_destroy(&table->forks[i].fork_mutex);
+		pthread_mutex_destroy(&table->philosophers[i].mutex);
+	}
 	pthread_mutex_destroy(&table->write_mutex);
 	pthread_mutex_destroy(&table->table_mutex);
 	free(table->philosophers);

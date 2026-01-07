@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 15:17:27 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:56:44 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_philo
 	t_fork				*right_fork;
 	pthread_t			thread;
 	t_table				*table;
+	pthread_mutex_t mutex;
 }						t_philo;
 
 typedef enum e_philo_status

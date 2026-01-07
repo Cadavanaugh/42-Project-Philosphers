@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 21:12:56 by jode-cas          #+#    #+#             */
-/*   Updated: 2025/12/29 21:28:08 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:57:06 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ static char	is_dead(t_philo *philosopher)
 	char			is_dead;
 	unsigned long	time_since_last_meal;
 
+  pthread_mutex_lock(&philosopher->mutex);
 	if (philosopher->last_meal_time == 0)
 		time_since_last_meal = gettime() - get_long(&philosopher->table->table_mutex,
 			&philosopher->table->start_time);
 	else
 		time_since_last_meal = gettime() - philosopher->last_meal_time;
+  pthread_mutex_unlock(&philosopher->mutex);
 	is_dead = time_since_last_meal >= philosopher->table->die_time;
 	return (is_dead);
 }

@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:36:28 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 15:30:16 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:57:37 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	init_philos_and_forks(t_table *table)
 	while (++i < table->n_philos)
 	{
 		pthread_mutex_init(&table->forks[i].fork_mutex, NULL);
+		pthread_mutex_init(&table->philosophers[i].mutex, NULL);
 		table->philosophers[i].id = i + 1;
 		table->philosophers[i].is_full = 0;
 		table->philosophers[i].has_eaten = 0;
