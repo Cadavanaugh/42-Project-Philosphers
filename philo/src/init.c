@@ -21,7 +21,7 @@ static void	*dinner_routine(void *arg)
 			&philosopher->table->all_threads_running))
 		;
 	if (philosopher->id % 2 == 0)
-		precise_sleep_ms(1);
+		precise_sleep_ms(philosopher->table->n_philos);
 	while (!philosopher->is_full && !is_anyone_dead(philosopher->table))
 	{
 		if (eat(philosopher))
