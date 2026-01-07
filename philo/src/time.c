@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 23:09:15 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/07 13:40:33 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 15:28:24 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ unsigned long	gettime(void)
 void	precise_sleep_ms(long time_to_sleep_in_ms)
 {
 	unsigned long	initial_time;
-	unsigned long remaining_time;
-	unsigned long target_time;
+	unsigned long	remaining_time;
+	unsigned long	target_time;
 
 	initial_time = gettime();
 	target_time = initial_time + time_to_sleep_in_ms;

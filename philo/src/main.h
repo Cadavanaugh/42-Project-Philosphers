@@ -6,16 +6,19 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:03:49 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/07 13:56:44 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 16:41:41 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <time.h>
-#include <unistd.h>
+#ifndef MAIN_H
+# define MAIN_H
+
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <time.h>
+# include <unistd.h>
 
 typedef struct s_philo	t_philo;
 
@@ -53,7 +56,7 @@ typedef struct s_philo
 	t_fork				*right_fork;
 	pthread_t			thread;
 	t_table				*table;
-	pthread_mutex_t mutex;
+	pthread_mutex_t		mutex;
 }						t_philo;
 
 typedef enum e_philo_status
@@ -84,4 +87,6 @@ char					get_char(pthread_mutex_t *mutex, char *attr);
 void					think(t_philo *philosopher);
 void					release_forks(t_philo *philosopher);
 char					is_anyone_dead(t_table *table);
-void	init_waiter(t_table *table);
+void					init_waiter(t_table *table);
+
+#endif
