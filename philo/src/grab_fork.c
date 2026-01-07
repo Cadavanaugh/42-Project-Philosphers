@@ -6,7 +6,7 @@
 /*   By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:29:23 by jode-cas          #+#    #+#             */
-/*   Updated: 2026/01/04 15:19:20 by jode-cas         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:20:38 by jode-cas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ char	assign_forks(t_philo *philosopher)
 		}
 		return (0);
 	}
-	if (philosopher->table->n_philos % 2 == 1 && philosopher->id == philosopher->table->n_philos)
-		precise_sleep_ms(1);
 	if (philosopher->id % 2 == 0)
 		return (even_grab(philosopher));
 	else
