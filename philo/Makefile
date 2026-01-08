@@ -6,7 +6,7 @@
 #    By: jode-cas <jode-cas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/01 13:55:45 by jode-cas          #+#    #+#              #
-#    Updated: 2025/12/29 21:27:55 by jode-cas         ###   ########.fr        #
+#    Updated: 2026/01/08 17:40:46 by jode-cas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ OBJS = $(patsubst $(SRC_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRCS))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(SRCS) -o philo
+	$(CC) $(SRCS) -o $(NAME)
 
 $(OBJS): $(SRCS)
 	mkdir -p objs

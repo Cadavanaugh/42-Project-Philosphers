@@ -1,4 +1,4 @@
 .vscode
 philo/objs
-philo/philo
+philo/philosophers
 *.png
